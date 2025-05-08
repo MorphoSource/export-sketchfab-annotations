@@ -1,0 +1,12 @@
+body {
+  font-family: sans-serif;
+
+  & label {
+    display: block;
+  }
+
+  & textarea {
+    font-family: monospace;
+  }
+}
+/*# sourceMappingURL=export-sketchfab-annotations.97c586ca.css.map */
