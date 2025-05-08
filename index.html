@@ -1,1 +1,47 @@
-<!DOCTYPE html><html><head><title>JavaScript Sandbox</title><meta charset="utf-8"><link rel="stylesheet" href="/export-sketchfab-annotations.ae4c1baa.css"></head><body> <h2>Export SketchFab Annotations to MorphoSource Annotations</h2> <p> Important note: This works best on models that are centered at the origin! </p> <div style="margin-top:40px"> <label for="sketchfab-id">SketchFab UID</label> <input id="sketchfab-id" name="sketchfab-id" style="width:400px" value="02938ee0b26e45faa881e69fc9514c15"> <button id="import-sketchfab" style="margin-top:10px;display:block"> Import Annotations From SketchFab </button> </div> <div style="margin-top:40px"> <label for="sketchfab-annotations">SketchFab Annotation Format</label> <textarea id="sketchfab-annotations" name="sketchfab-annotations" rows="10" cols="70"></textarea> </div> <div style="margin-top:40px"> <label for="morphosource-annotations">MorphoSource Annotation Format</label> <textarea id="morphosource-annotations" name="morphosource-annotations" rows="10" cols="70"></textarea> </div> <div style="margin-top:40px"> <span>SketchFab Viewer (For Debug)</span> <div class="container"> <div class="iframe-container"> <iframe title="Sketchfab Viewer" id="api-frame"></iframe> </div> <div class="controls" id="controls"> <pre id="Info"></pre> </div> </div> </div> <script src="/export-sketchfab-annotations.efe004b1.js" type="module"></script> </body></html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JavaScript Sandbox</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="export-sketchfab-annotations.aa7028d1.css">
+  </head>
+
+  <body>
+    <h2>Export SketchFab Annotations to MorphoSource Annotations</h2>
+    <p>
+      Important note: This works best on models that are centered at the origin!
+    </p>
+
+    <div style="margin-top: 40px">
+      <label for="sketchfab-id">SketchFab UID</label>
+      <input id="sketchfab-id" name="sketchfab-id" style="width: 400px" value="02938ee0b26e45faa881e69fc9514c15">
+      <button id="import-sketchfab" style="margin-top: 10px; display: block">
+        Import Annotations From SketchFab
+      </button>
+    </div>
+
+    <div style="margin-top: 40px">
+      <label for="sketchfab-annotations">SketchFab Annotation Format</label>
+      <textarea id="sketchfab-annotations" name="sketchfab-annotations" rows="10" cols="70"></textarea>
+    </div>
+
+    <div style="margin-top: 40px">
+      <label for="morphosource-annotations">MorphoSource Annotation Format</label>
+      <textarea id="morphosource-annotations" name="morphosource-annotations" rows="10" cols="70"></textarea>
+    </div>
+
+    <div style="margin-top: 40px">
+      <span>SketchFab Viewer (For Debug)</span>
+      <div class="container">
+        <div class="iframe-container">
+          <iframe title="Sketchfab Viewer" id="api-frame"></iframe>
+        </div>
+        <div class="controls" id="controls">
+          <pre id="Info"></pre>
+        </div>
+      </div>
+    </div>
+
+    <script src="export-sketchfab-annotations.2dd97bd2.js" type="module"></script>
+  </body>
+</html>
