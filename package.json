@@ -4,7 +4,7 @@
   "description": "The JavaScript template",
   "scripts": {
     "start": "parcel ./src/index.html",
-    "build": "parcel build ./src/index.html"
+    "build": "parcel build ./src/index.html --no-optimize --public-url ./"
   },
   "dependencies": {
     "@sketchfab/viewer-api": "1.12.1"
