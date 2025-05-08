@@ -1,4 +1,3 @@
-import "./styles.css";
 import Sketchfab from "@sketchfab/viewer-api";
 
 // Sketchfab Viewer API: Start/Stop the viewer
