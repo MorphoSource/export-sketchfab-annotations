@@ -4,5 +4,9 @@ body {
     label {
       display: block;
     }
+
+    textarea {
+      font-family: monospace
+    }
   }
   
