@@ -1,1 +1,0 @@
-{"mappings":"AAAA;;;EAGI;;;;EAIA","sources":["src/styles.css"],"sourcesContent":["body {\n    font-family: sans-serif;\n  \n    label {\n      display: block;\n    }\n\n    textarea {\n      font-family: monospace\n    }\n  }\n  "],"names":[],"version":3,"file":"export-sketchfab-annotations.97c586ca.css.map"}

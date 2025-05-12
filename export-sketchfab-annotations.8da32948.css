@@ -1,0 +1,45 @@
+body {
+  font-family: sans-serif;
+
+  & iframe {
+    background-color: #000;
+    width: 100%;
+  }
+
+  & label {
+    display: block;
+  }
+
+  & textarea {
+    font-family: monospace;
+  }
+
+  & .section {
+    flex-direction: column;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 2rem;
+    display: flex;
+    position: relative;
+
+    & .btn-copy {
+      position: absolute;
+      top: 35px;
+      right: 20px;
+    }
+
+    & #viewer-container {
+      display: block !important;
+
+      &.collapse iframe {
+        height: 0;
+      }
+
+      &.collapse.show iframe {
+        width: 100%;
+        height: 400px;
+      }
+    }
+  }
+}
+/*# sourceMappingURL=export-sketchfab-annotations.8da32948.css.map */
