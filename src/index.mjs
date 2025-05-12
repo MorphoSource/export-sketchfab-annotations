@@ -1,4 +1,7 @@
 import Sketchfab from "@sketchfab/viewer-api";
+import ClipboardJS from "clipboard";
+
+new ClipboardJS('.btn');
 
 // Sketchfab Viewer API: Start/Stop the viewer
 var version = "1.12.1";
@@ -59,6 +62,10 @@ var success = function success(api) {
             );
           }
         }
+
+        document.querySelector(
+          "#import-sketchfab .spinner-border"
+        ).hidden = true;
       });
       // api.getSceneGraph(function (err, graph) {
       //   if (!err) {
@@ -69,40 +76,47 @@ var success = function success(api) {
   });
 };
 
-//////////////////////////////////
-// GUI Code
-//////////////////////////////////
-function initGui() {
-  var controls = document.getElementById("controls");
-  var buttonsText = "";
-  buttonsText += '<button id="start">Start</button>';
-  buttonsText += '<button id="stop">Stop</button>';
-  controls.innerHTML = buttonsText;
-}
-// initGui();
+document.getElementById("sketchfab-url").addEventListener("input", function () {
+  this.setCustomValidity('');
+});
 
-//////////////////////////////////
-// GUI Code end
-//////////////////////////////////
-
-const importSketchfabButton = document.getElementById("import-sketchfab");
-
-importSketchfabButton.addEventListener("click", function (event) {
+document.getElementById("sketchfab-form").addEventListener("submit", function (event) {
   event.preventDefault();
+  
+  event.target.querySelector(".spinner-border").hidden = false;
 
-  const uidElement = document.getElementById("sketchfab-id");
-  if (uidElement && uidElement.value) {
-    client.init(uidElement.value, {
+  const urlElement = document.getElementById("sketchfab-url");
+  if (!urlElement) return;
+
+  urlElement.setCustomValidity('');
+  const url = urlElement.value;
+  const uid = extractSketchfabUID(url);
+
+  if (uid) {
+    client.init(uid, {
       success: success,
       error: error,
       autostart: 1,
       preload: 1,
     });
+  } else {
+    urlElement.setCustomValidity("Invalid SketchFab URL");
+    urlElement.reportValidity();
+    event.target.querySelector(".spinner-border").hidden = true;
   }
 });
 
 // For now, start by importing to speed up development
-importSketchfabButton.click();
+// const importSketchfabButton = document.getElementById("import-sketchfab");
+// importSketchfabButton.click();
+
+// Function to extract UID from SketchFab URL
+function extractSketchfabUID(url) {
+  const regex = /(?:models|3d-models)\/(?:.*-)?([a-zA-Z0-9]+)/;
+  const match = url.match(regex);
+  return match ? match[1] : null;
+}
+
 
 // Code for converting to MS annotation format
 

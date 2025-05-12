@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-bs-theme="dark">
   <head>
     <title>Export SketchFab Annotations</title>
     <meta charset="UTF-8" />
@@ -10,25 +10,38 @@
 
   <body>
     <div class="d-flex flex-column align-items-center p-4">
-      <h2>Export SketchFab Annotations to MorphoSource Annotations</h2>
-      <p>
-        Important note: This works best on models that are centered at the origin!
-      </p>
+      <h2>Export SketchFab Annotations</h2>
+      
+      <div class="section">
+        <p> 
+          Enter the URL of the SketchFab model you want to export annotations from. Annotations will be exported in SketchFab JSON format. 
+        </p>
 
-      <div style="margin-top: 40px">
-        <label for="sketchfab-id">SketchFab UID</label>
-        <input
-          id="sketchfab-id"
-          name="sketchfab-id"
-          style="width: 400px"
-          value="02938ee0b26e45faa881e69fc9514c15"
-        />
-        <button id="import-sketchfab" style="display: block; margin-top: 10px">
-          Import Annotations From SketchFab
-        </button>
+        <p>
+          
+          If you are looking for an open academic alternative to SketchFab for hosting 3D models, <a href="https://morphosource.org">MorphoSource</a> now supports model annotations. SketchFab format annotations will be automatically converted to a format that can be imported into MorphoSource.
+        </p>
       </div>
 
-      <div style="margin-top: 40px">
+
+      <div class="section">
+        <form class="d-flex flex-column " id="sketchfab-form">
+          <label for="sketchfab-url">SketchFab URL</label>
+
+          <input
+            id="sketchfab-url"
+            name="sketchfab-url"
+            value="https://sketchfab.com/3d-models/whale-mandible-02938ee0b26e45faa881e69fc9514c15"
+          />
+
+          <button id="import-sketchfab" type="submit" class="mt-2 btn btn-primary">
+            <span class="spinner-border spinner-border-sm" aria-hidden="true" hidden></span>
+            Export Annotations From SketchFab
+          </button>
+        </form>
+      </div>
+
+      <div class="section">
         <label for="sketchfab-annotations">SketchFab Annotation Format</label>
         <textarea
           id="sketchfab-annotations"
@@ -36,33 +49,40 @@
           rows="10"
           cols="70"
         ></textarea>
+        <button class="btn btn-outline-secondary btn-copy" data-clipboard-target="#sketchfab-annotations">
+          Copy
+        </button>
       </div>
 
-      <div style="margin-top: 40px">
-        <label for="morphosource-annotations"
-          >MorphoSource Annotation Format</label
-        >
-        <textarea
-          id="morphosource-annotations"
-          name="morphosource-annotations"
-          rows="10"
-          cols="70"
-        ></textarea>
+      <div class="section">
+          To import annotations into MorphoSource, copy the text below and head to the edit page for the corresponding MorphoSource media. Instructions in the preview tab will guide you through the next step. Please note this process works best for 3D models centered at the origin, since MorphoSource previews are centered by default.
       </div>
 
-      <div style="margin-top: 40px">
-        <span>SketchFab Viewer (For Debug)</span>
-        <div class="container">
+      <div class="section">
+          <label for="morphosource-annotations"
+            >MorphoSource Annotation Format</label
+          >
+          <textarea
+            id="morphosource-annotations"
+            name="morphosource-annotations"
+            rows="10"
+            cols="70"
+          ></textarea>
+          <button class="btn btn-outline-secondary btn-copy" data-clipboard-target="#morphosource-annotations">
+            Copy
+          </button>
+      </div>
+
+      <div class="section">
+        <a href="#viewer-container" data-bs-toggle="collapse">Debug: Toggle SketchFab Viewer</a>
+        <div id="viewer-container" class="collapse">
           <div class="iframe-container">
             <iframe title="Sketchfab Viewer" id="api-frame"></iframe>
-          </div>
-          <div class="controls" id="controls">
-            <pre id="Info"></pre>
           </div>
         </div>
       </div>
 
-      <div style="margin-top: 40px">
+      <div class="mt-3">
         Created by <a href="https://github.com/JulieWinchester">Julie Winchester</a>, source code available on <a href="https://github.com/MorphoSource/export-sketchfab-annotations">GitHub</a>
       </div>
     </div>
