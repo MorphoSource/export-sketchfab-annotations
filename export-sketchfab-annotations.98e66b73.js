@@ -901,6 +901,7 @@ var $30732a08c2749711$var$success = function success(api) {
                             return {
                                 title: anno.name,
                                 position: anno.position,
+                                localPosition: anno.localPosition,
                                 eye: anno.eye,
                                 target: anno.target
                             };
@@ -909,16 +910,7 @@ var $30732a08c2749711$var$success = function success(api) {
                         const sketchfabAnnotationsInput = document.getElementById("sketchfab-annotations");
                         sketchfabAnnotationsInput.value = JSON.stringify(sketchfabAnnotations, null, 2);
                         // Convert and Report MorphoSource Annotation Format
-                        const morphosourceAnnotationsInput = document.getElementById("morphosource-annotations");
-                        morphosourceAnnotationsInput.value = JSON.stringify(sketchfabAnnotations.map((anno)=>{
-                            return {
-                                label: anno.title,
-                                description: anno.text,
-                                position: $30732a08c2749711$var$convertCoordsSfToMs(anno.position),
-                                cameraPosition: $30732a08c2749711$var$convertCoordsSfToMs(anno.eye),
-                                cameraTarget: $30732a08c2749711$var$convertCoordsSfToMs(anno.target)
-                            };
-                        }), null, 2);
+                        $30732a08c2749711$var$updateMorphosourceAnnotations();
                     }
                 }
                 document.querySelector("#import-sketchfab .spinner-border").hidden = true;
@@ -931,6 +923,28 @@ var $30732a08c2749711$var$success = function success(api) {
         });
     });
 };
+function $30732a08c2749711$var$updateMorphosourceAnnotations() {
+    const sketchfabAnnotationsInput = document.getElementById("sketchfab-annotations");
+    const sketchfabAnnotations = JSON.parse(sketchfabAnnotationsInput.value);
+    if (sketchfabAnnotations.length) {
+        const morphosourceCameraScale = document.getElementById("morphosource-camera-scale");
+        const morphosourceCameraScaleValue = parseFloat(morphosourceCameraScale.value) || 1.0;
+        const morphosourceAnnotationsInput = document.getElementById("morphosource-annotations");
+        morphosourceAnnotationsInput.value = JSON.stringify(sketchfabAnnotations.map((anno)=>{
+            const cameraPosition = $30732a08c2749711$var$convertCoordsSfToMs(anno.eye);
+            cameraPosition['x'] *= morphosourceCameraScaleValue;
+            cameraPosition['y'] *= morphosourceCameraScaleValue;
+            cameraPosition['z'] *= morphosourceCameraScaleValue;
+            return {
+                label: anno.title,
+                description: anno.text,
+                position: $30732a08c2749711$var$convertCoordsSfToMs(anno.position),
+                cameraPosition: cameraPosition,
+                cameraTarget: $30732a08c2749711$var$convertCoordsSfToMs(anno.target)
+            };
+        }), null, 2);
+    }
+}
 document.getElementById("sketchfab-url").addEventListener("input", function() {
     this.setCustomValidity('');
 });
@@ -954,6 +968,24 @@ document.getElementById("sketchfab-form").addEventListener("submit", function(ev
         event.target.querySelector(".spinner-border").hidden = true;
     }
 });
+document.getElementById("morphosource-units").addEventListener("input", function() {
+    $30732a08c2749711$var$updateMorphosourceAnnotations();
+});
+document.getElementById("morphosource-extra-scale").addEventListener("input", function() {
+    $30732a08c2749711$var$updateMorphosourceAnnotations();
+});
+document.getElementById("morphosource-camera-scale").addEventListener("input", function() {
+    $30732a08c2749711$var$updateMorphosourceAnnotations();
+});
+document.getElementById("morphosource-transform-x").addEventListener("input", function() {
+    $30732a08c2749711$var$updateMorphosourceAnnotations();
+});
+document.getElementById("morphosource-transform-y").addEventListener("input", function() {
+    $30732a08c2749711$var$updateMorphosourceAnnotations();
+});
+document.getElementById("morphosource-transform-z").addEventListener("input", function() {
+    $30732a08c2749711$var$updateMorphosourceAnnotations();
+});
 // For now, start by importing to speed up development
 // const importSketchfabButton = document.getElementById("import-sketchfab");
 // importSketchfabButton.click();
@@ -972,14 +1004,21 @@ function $30732a08c2749711$var$convertCoordsSfToMs(xyz) {
             xyz["1"],
             xyz["2"]
         ];
+        const msUnit = document.getElementById("morphosource-units");
+        const msUnitValue = parseFloat(msUnit.value) || 1.0;
+        const msExtraScale = document.getElementById("morphosource-extra-scale");
+        const msExtraScaleValue = parseFloat(msExtraScale.value) || 1.0;
+        const msTransformX = parseFloat(document.getElementById("morphosource-transform-x").value) || 0.0;
+        const msTransformY = parseFloat(document.getElementById("morphosource-transform-y").value) || 0.0;
+        const msTransformZ = parseFloat(document.getElementById("morphosource-transform-z").value) || 0.0;
         // Where MS uses Y+ up Z+ toward viewer, SF uses Z+ up Y+ away from viewer
         return {
-            x: xyz[0],
-            y: xyz[2],
-            z: xyz[1] * -1
+            x: xyz[0] * msUnitValue * msExtraScaleValue + msTransformX,
+            y: xyz[2] * msUnitValue * msExtraScaleValue + msTransformY,
+            z: xyz[1] * -1 * msUnitValue * msExtraScaleValue + msTransformZ
         };
     } else return undefined;
 }
 
 
-//# sourceMappingURL=export-sketchfab-annotations.f0935e27.js.map
+//# sourceMappingURL=export-sketchfab-annotations.98e66b73.js.map

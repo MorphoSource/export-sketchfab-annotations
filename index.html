@@ -14,7 +14,7 @@
       
       <div class="section">
         <p> 
-          Enter the URL of the SketchFab model you want to export annotations from. Annotations will be exported in SketchFab JSON format. 
+          Enter the URL of the SketchFab model you want to export annotations from. Annotations will be exported in SketchFab JSON format. For models with many annotations, export may take a moment.
         </p>
 
         <p>
@@ -46,10 +46,54 @@
       </div>
 
       <div class="section">
-          To import annotations into MorphoSource, copy the text below and head to the edit page for the corresponding MorphoSource media. Instructions in the preview tab will guide you through the next step. Please note this process works best for 3D models centered at the origin, since MorphoSource previews are centered by default.
+          To import annotations into MorphoSource, copy the text below and head to the edit page for the corresponding MorphoSource media. Instructions in the preview tab will guide you through the next step. Please note this process works best for 3D models centered at the origin, since MorphoSource previews are centered by default. To fine tune how annotations are converted, you can use the advanced options below.
       </div>
 
       <div class="section">
+        <a href="#morphosource-advanced-options" data-bs-toggle="collapse">Toggle Advanced MorphoSource Options</a>
+      </div>
+
+      <div id="morphosource-advanced-options" class="section mt-1 collapse">
+        <label for="morphosource-units">MorphoSource Units of Point Coordinates</label>
+        <select id="morphosource-units" name="morphosource-units">
+        <option value="0.01">Centimeters (Scale x 0.01)</option>
+        <option value="0.001">Millimeters (Scale x 0.001)</option>
+        <option value="0.000001">Micrometers (Scale x 0.000001) </option>
+        <option selected="selected" value="1">Meters (Scale x 1)</option>
+        <option value="1000">Kilometers (Scale x 1000)</option>
+        <option value="0.025400050800101603">Inches (Scale x 0.0254)</option>
+        <option value="0.30478512648582745">Feet (Scale x 0.305)</option>
+        <option value="1609">Miles (Scale x 1609)</option></select>
+        <p><small>
+          This should correspond to the units of point coordinates associated with the media on MorphoSource. This will scale SketchFab coordinates to the same units as the MorphoSource media.
+        </small></p>
+
+        <label class="mt-2" for="morphosource-extra-scale">Global Additional Scale Modifier</label>
+        <input id="morphosource-extra-scale" name="morphosource-extra-scale" value="1" type="number" step="any">
+        <p><small>
+          This will scale all data (annotations, camera positions, etc.) by the specified amount. This scale will be applied in addition to or on top of the scaling applied by the units selected above.
+        </small></p>
+
+        <label class="mt-2" for="morphosource-extra-scale">Camera Position Scale Modifier</label>
+        <input id="morphosource-camera-scale" name="morphosource-camera-scale" value="1" type="number" step="any">
+        <p><small>
+          This will scale only annotation camera positions by the specified amount. This scale will be applied in addition to the scaling from fields above.
+        </small></p>
+
+        <label class="mt-2" for="morphosource-transform">XYZ Transform</label>
+        <div class="d-flex gap-2">
+          <input id="morphosource-transform-x" class="w-100" name="morphosource-transform-x" placeholder="X" type="number" step="any">
+        <input id="morphosource-transform-y" class="w-100" name="morphosource-transform-y" placeholder="Y" type="number" step="any">
+        <input id="morphosource-transform-z" class="w-100" name="morphosource-transform-z" placeholder="Z" type="number" step="any">
+        </div>
+        <p><small>
+          This will transform coordinates by the specified amounts along X, Y, and Z axes respectively. Transforms will be applied after scaling.
+        </small></p>
+        
+        
+      </div>
+
+      <div class="section mt-3">
           <label for="morphosource-annotations">MorphoSource Annotation Format</label>
           <textarea id="morphosource-annotations" name="morphosource-annotations" rows="10" cols="70"></textarea>
           <button class="btn btn-outline-secondary btn-copy" data-clipboard-target="#morphosource-annotations">
@@ -72,6 +116,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
-    <script src="export-sketchfab-annotations.f0935e27.js" type="module"></script>
+    <script src="export-sketchfab-annotations.98e66b73.js" type="module"></script>
   </body>
 </html>
