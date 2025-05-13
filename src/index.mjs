@@ -28,6 +28,7 @@ var success = function success(api) {
               return {
                 title: anno.name,
                 position: anno.position,
+                localPosition: anno.localPosition,
                 eye: anno.eye,
                 target: anno.target,
               };
@@ -44,22 +45,7 @@ var success = function success(api) {
             );
 
             // Convert and Report MorphoSource Annotation Format
-            const morphosourceAnnotationsInput = document.getElementById(
-              "morphosource-annotations"
-            );
-            morphosourceAnnotationsInput.value = JSON.stringify(
-              sketchfabAnnotations.map((anno) => {
-                return {
-                  label: anno.title,
-                  description: anno.text,
-                  position: convertCoordsSfToMs(anno.position),
-                  cameraPosition: convertCoordsSfToMs(anno.eye),
-                  cameraTarget: convertCoordsSfToMs(anno.target),
-                };
-              }),
-              null,
-              2
-            );
+            updateMorphosourceAnnotations();
           }
         }
 
@@ -75,6 +61,44 @@ var success = function success(api) {
     });
   });
 };
+
+function updateMorphosourceAnnotations() {
+  const sketchfabAnnotationsInput = document.getElementById(
+    "sketchfab-annotations"
+  );
+  const sketchfabAnnotations = JSON.parse(sketchfabAnnotationsInput.value);
+
+  if (sketchfabAnnotations.length) {
+    const morphosourceCameraScale = document.getElementById(
+      "morphosource-camera-scale"
+    );
+    const morphosourceCameraScaleValue = parseFloat(
+      morphosourceCameraScale.value
+    ) || 1.0;
+
+    const morphosourceAnnotationsInput = document.getElementById(
+      "morphosource-annotations"
+    );
+    morphosourceAnnotationsInput.value = JSON.stringify(
+      sketchfabAnnotations.map((anno) => {
+        const cameraPosition = convertCoordsSfToMs(anno.eye);
+        cameraPosition['x'] *= morphosourceCameraScaleValue;
+        cameraPosition['y'] *= morphosourceCameraScaleValue;
+        cameraPosition['z'] *= morphosourceCameraScaleValue;
+
+        return {
+          label: anno.title,
+          description: anno.text,
+          position: convertCoordsSfToMs(anno.position),
+          cameraPosition: cameraPosition,
+          cameraTarget: convertCoordsSfToMs(anno.target),
+        };
+      }),
+      null,
+      2
+    );
+  }
+}
 
 document.getElementById("sketchfab-url").addEventListener("input", function () {
   this.setCustomValidity('');
@@ -106,6 +130,30 @@ document.getElementById("sketchfab-form").addEventListener("submit", function (e
   }
 });
 
+document.getElementById("morphosource-units").addEventListener("input", function () {
+  updateMorphosourceAnnotations();
+});
+
+document.getElementById("morphosource-extra-scale").addEventListener("input", function () {
+  updateMorphosourceAnnotations();
+});
+
+document.getElementById("morphosource-camera-scale").addEventListener("input", function () {
+  updateMorphosourceAnnotations();
+});
+
+document.getElementById("morphosource-transform-x").addEventListener("input", function () {
+  updateMorphosourceAnnotations();
+});
+document.getElementById("morphosource-transform-y").addEventListener("input", function () {
+  updateMorphosourceAnnotations();
+});
+document.getElementById("morphosource-transform-z").addEventListener("input", function () {
+  updateMorphosourceAnnotations();
+});
+
+
+
 // For now, start by importing to speed up development
 // const importSketchfabButton = document.getElementById("import-sketchfab");
 // importSketchfabButton.click();
@@ -127,11 +175,21 @@ function convertCoordsSfToMs(xyz) {
       xyz = [xyz["0"], xyz["1"], xyz["2"]];
     }
 
+    const msUnit = document.getElementById("morphosource-units");
+    const msUnitValue = parseFloat(msUnit.value) || 1.0;
+
+    const msExtraScale = document.getElementById("morphosource-extra-scale");
+    const msExtraScaleValue = parseFloat(msExtraScale.value) || 1.0;
+
+    const msTransformX = parseFloat(document.getElementById("morphosource-transform-x").value) || 0.0;
+    const msTransformY = parseFloat(document.getElementById("morphosource-transform-y").value) || 0.0;
+    const msTransformZ = parseFloat(document.getElementById("morphosource-transform-z").value) || 0.0;
+
     // Where MS uses Y+ up Z+ toward viewer, SF uses Z+ up Y+ away from viewer
     return {
-      x: xyz[0],
-      y: xyz[2],
-      z: xyz[1] * -1.0,
+      x: ( xyz[0] * msUnitValue * msExtraScaleValue ) + msTransformX,
+      y: ( xyz[2] * msUnitValue * msExtraScaleValue ) + msTransformY,
+      z: ( xyz[1] * -1.0 * msUnitValue * msExtraScaleValue ) + msTransformZ,
     };
   } else {
     return undefined;
